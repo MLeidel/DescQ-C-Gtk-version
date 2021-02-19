@@ -1,0 +1,5 @@
+Clips.txt
+=========
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+

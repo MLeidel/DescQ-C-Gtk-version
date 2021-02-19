@@ -1,0 +1,22 @@
+--- COMMANDS ---
+;calendar,https://calendar.google.com/calendar/r?pli=1
+;contacts,https://contacts.google.com
+;drive Google,https://drive.google.com/drive/my-drive?ths=true
+;dev,bash dev.sh
+;git,https://github.com
+;htop,x-terminal-emulator -e htop
+;office,https://www.office.com/?auth=1
+;outlook,https://outlook.com
+;photos,https://photos.google.com/
+;reboot,reboot
+;shutdown,shutdown now
+;term,xfce4-terminal --geometry 85x32+50+300
+;weather,https://www.wunderground.com/weather/us/wi/waukesha
+;zoom,https://us04web.zoom.us/meeting
+--- SERVICES ---
+a,Amazon,https://smile.amazon.com/s/ref=nb_sb_noss_1?field-keywords=
+m,Google Maps,https://www.google.com/maps/search/
+y,YouTube,https://www.youtube.com/results?search_query=
+i,Google Images,http://images.google.com/images?q=
+w,Wikipedia,https://en.wikipedia.org/w/index.php?title=Special:Search&profile=default&fulltext=Search&search=
+p,Php,http://php.net/manual-lookup.php?pattern=

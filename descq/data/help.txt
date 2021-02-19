@@ -1,0 +1,128 @@
+
+Help for "DESCQ"
+================
+Descq gives you command line availability on the Linux GUI desktop;
+allows you to tailor commands for quick website access and services;
+provides an alternative to using your browser's bookmarking;
+can be customized exactly for your purposes.
+
+To run: $ /path.../descq
+
+These files must be present
+   in the descq/... directory:
+   
+    descq.glade     the xml GUI layout for descq
+    descq           program (linux binary executable)
+
+These files must be present
+    in the descq/data/... directory:
+
+    serv.txt        user defined commands
+    hist.txt        record of searches
+    clip.txt        saved clipboard texts
+    urls.txt        list of saved URLs
+    winmet.txt      window position & size
+
+    NOTE: DESCQ will attempt to use "gedit" for its text editor.
+    To install it: sudo apt install gedit
+
+
+    To activate a command hit Enter or click ■ button
+
+        1. Enter a full URL (or URL in clipboard)
+        ----> saves URL to "urls.txt" file
+
+        2. Enter text for a search
+        ----> runs the search in your browser
+                and saves search text to "hist.txt" file
+
+        3. Enter "sc" (or click ■ button when Entry field is empty)
+        ----> saves clipboard contents:
+            URL saves to "urls.txt"
+            Text saves to "clip.txt"
+
+        4. "list"
+        ----> opens dialog with list of saved URLs
+            click on a row launches URL in browser
+
+        5. "hist"
+        ----> opens dialog with list of past search texts
+            click on a row launches in browser
+
+        6. "cap"
+        ----> toggles the "window" caption bar on and off
+            use the caption to move the window to
+            your desired position on the desktop
+
+        7. "winset"
+        ----> saves the current window position and size
+
+
+    Other commands:
+
+    "eu"    edit the urls.txt file
+    "ec"    edit the clip.txt file
+    "eh"    edit the hist.txt file
+    "es"    edit the serv.txt file
+    "help"  edit/view this file (help.txt)
+
+    You are responsible for setting up the services and commands
+    which are maintained in the serv.txt file.
+    commands must start with one of these 3 characters  ; . $
+    (see serv.txt for examples)
+
+    Targeted web searches (services) must begin with one letter and
+    a colon (:) (see serv.txt for examples)
+
+    Here is the serv.txt file that comes with the distribution:
+
+----COMMANDS----
+;git,https://github.com
+;greatcourses,https://www.thegreatcourses.com/
+;term,x-terminal-emulator
+;news,https://microsoftnews.msn.com
+;reboot,reboot
+----SERVICES----
+a,Amazon,https://smile.amazon.com/s/ref=nb_sb_noss_1?field-keywords=
+m,Google Maps,https://www.google.com/maps/search/
+y,YouTube,https://www.youtube.com/results?search_query=
+i,Google Images,http://images.google.com/images?q=
+w,Wikipedia,https://en.wikipedia.org/w/index.php?title=Special:Searc. . . .
+p,Php,http://php.net/manual-lookup.php?pattern=
+
+For example, to go to github website:
+    .git
+
+to reboot:
+    .reboot
+    or just .r (in this case)
+    
+to go to greatcourses website:
+    .gr
+    
+Commands are located by leading characters
+
+SEARCH ENGINE
+
+Descq uses the DuckDuckGo search engine.
+If you wish to use someting different then you 
+can set it up as a service in serv.txt.
+
+CONSIDER USING DUCKDUCKGO SEARCH ENGINE
+
+With DuckDuclGo hundreds of "Bang" commands will be available to you.
+Here are a few.
+--- DDG BANG ---
+    Google Maps | !m  
+    Amazon  | !a
+    Images  | !gimg !pics
+    Php     | !php
+    YouTube | !ytus
+    Golang  | !golang !godoc
+    Python  | !py3k !py 
+    StackOverflow | !so !sof !ov !ddso
+    MDN | !mdn
+    List of Bangs | !bang
+-------------------------------------
+
+
