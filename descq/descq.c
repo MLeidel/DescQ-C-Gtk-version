@@ -25,6 +25,7 @@ GtkWidget *g_dlg_listbox;
 GtkWidget *g_dialog_box;
 GtkWidget *g_entry;
 GtkWidget *g_label;
+GtkWidget *g_messagebox;
 GtkClipboard *g_clipboard;
 GtkWidget *g_wnd;
 
@@ -56,6 +57,7 @@ int main(int argc, char *argv[])
     g_dialog_box = GTK_WIDGET(gtk_builder_get_object(builder, "dialog_list"));
     g_entry = GTK_WIDGET(gtk_builder_get_object(builder, "entry"));
     g_clipboard = gtk_clipboard_get(GDK_SELECTION_CLIPBOARD);
+    g_messagebox = GTK_WIDGET(gtk_builder_get_object(builder, "dlg_messagebox"));
 
     g_object_unref(builder);
 
@@ -83,8 +85,13 @@ int main(int argc, char *argv[])
     return 0;
 }
 
+// Display a message box
+void show_message(char pmsg[64], char smsg[64]) {
+    gtk_message_dialog_set_markup (GTK_MESSAGE_DIALOG(g_messagebox), pmsg);
+    gtk_message_dialog_format_secondary_markup(GTK_MESSAGE_DIALOG(g_messagebox), smsg, NULL);
+    gtk_dialog_run(GTK_DIALOG(g_messagebox));
+}
 
-// callback functions for GtkWidget events go here
 // called when window is closed
 void on_window1_destroy()
 {
@@ -207,6 +214,12 @@ void save_clipboard_to_file() {
     fprintf(fh,"%s\n", cliptxt);
     fclose(fh);
 }
+
+// "Close" was clicked in the messagebox
+void on_btn_dlg_msg_close_clicked() {
+    gtk_widget_hide(g_messagebox);
+}
+
 /**************************************
     The user has typed something into the entry field and hit Enter.
     (or might have clicked the button instead of hitting Enter)
@@ -225,6 +238,7 @@ void on_entry_activate(GtkEntry *entry) {
     char line[BUFFER2];
     char *ptr;
     int count = 0;
+    int rsp = 0;
     gchar out_str[BUFFER2] = {0};
     int w_top;
     int w_left;
@@ -275,7 +289,10 @@ void on_entry_activate(GtkEntry *entry) {
     } else if (strcmp(out_str, "help") == 0) {        // edit help.txt
         strcpy(action, EDITOR);
         strcat(action, " data/help.txt &");
-        system(action);
+        int rsp = system(action);
+        if (rsp == 0) {
+            show_message("<big>gedit</big>", "is not installed.");
+        }
 
     } else if (strcmp(out_str, "x") == 0) {         // exit program
         on_window1_destroy();
@@ -309,8 +326,6 @@ void on_entry_activate(GtkEntry *entry) {
                 *ptr = '\0';  // replace ',' with end of string \0
                 ltrim(action);  // incase of space after the ','
                 if (startswith(out_str+1, line+1)) {  // skip past the '.;$' char
-                    printf("found %s\n", line+1);
-                    printf("%s\n", action);
                     // if action is a website
                      if (g_str_has_prefix(action, "http")) {
                         strcpy(line, "xdg-open ");
@@ -318,12 +333,18 @@ void on_entry_activate(GtkEntry *entry) {
                         printf("%s\n", line);
                         system(line);
                      } else {  // it has to be a local command
-                        system(action);
+                        rsp = system(action);
+                        if (rsp != 0) {
+                            show_message(out_str,"returned an error");
+                        }
                      }
+                     fclose(fh);
+                     return;
                 }
             }
         }  // end while
         fclose(fh);
+        show_message(out_str, "<b>Not Found in serv.txt</b>");
 
     } else if (out_str[1] == ':') {  // run a service query from serv.txt
         action[0] = out_str[0];
