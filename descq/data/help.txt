@@ -17,11 +17,12 @@ These files must be present
 These files must be present
     in the descq/data/... directory:
 
-    serv.txt        user defined commands
-    hist.txt        record of searches
-    clip.txt        saved clipboard texts
-    urls.txt        list of saved URLs
-    winmet.txt      window position & size
+    serv.txt       user defined commands
+    hist.txt       record of searches
+    clip.txt       saved clipboard texts
+    urls.txt       list of saved URLs
+    winmet.txt     window position & size
+    help.txt       this file
 
     NOTE: DESCQ will attempt to use "gedit" for its text editor.
     To install it: sudo apt install gedit
@@ -29,12 +30,12 @@ These files must be present
 
     To activate a command hit Enter or click ■ button
 
-        1. Enter a full URL (or URL in clipboard)
-        ----> saves URL to "urls.txt" file
-
-        2. Enter text for a search
+        1. Enter text for a search
         ----> runs the search in your browser
                 and saves search text to "hist.txt" file
+        
+        2. Enter a full URL (or URL in clipboard)
+        ----> saves URL to "urls.txt" file
 
         3. Enter "sc" (or click ■ button when Entry field is empty)
         ----> saves clipboard contents:
@@ -42,12 +43,12 @@ These files must be present
             Text saves to "clip.txt"
 
         4. "list"
-        ----> opens dialog with list of saved URLs
+        ----> opens list of saved URLs
             click on a row launches URL in browser
 
         5. "hist"
-        ----> opens dialog with list of past search texts
-            click on a row launches in browser
+        ----> opens list of past search texts
+            click on a row launches search in browser
 
         6. "cap"
         ----> toggles the "window" caption bar on and off
@@ -57,14 +58,13 @@ These files must be present
         7. "winset"
         ----> saves the current window position and size
 
-
     Other commands:
 
-    "eu"    edit the urls.txt file
-    "ec"    edit the clip.txt file
-    "eh"    edit the hist.txt file
-    "es"    edit the serv.txt file
-    "help"  edit/view this file (help.txt)
+    "eu"    ----> edit the urls.txt file
+    "ec"    ----> edit the clip.txt file
+    "eh"    ----> edit the hist.txt file
+    "es"    ----> edit the serv.txt file
+    "help"  ----> edit/view this file (help.txt)
 
     You are responsible for setting up the services and commands
     which are maintained in the serv.txt file.
@@ -80,6 +80,7 @@ These files must be present
 ;git,https://github.com
 ;greatcourses,https://www.thegreatcourses.com/
 ;term,x-terminal-emulator
+;htop,sakura -t "htop" -c 150 -r 45 -x htop &
 ;news,https://microsoftnews.msn.com
 ;reboot,reboot
 ----SERVICES----
@@ -89,6 +90,7 @@ y,YouTube,https://www.youtube.com/results?search_query=
 i,Google Images,http://images.google.com/images?q=
 w,Wikipedia,https://en.wikipedia.org/w/index.php?title=Special:Searc. . . .
 p,Php,http://php.net/manual-lookup.php?pattern=
+
 
 For example, to go to github website:
     .git
