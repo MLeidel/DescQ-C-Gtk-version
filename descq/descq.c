@@ -394,7 +394,7 @@ void on_btn_entry_clicked() {
     }
 }
 
-void on_window1_key_press_event(GtkWidget *w, GdkEvent *e) {
+_Bool on_window1_key_press_event(GtkWidget *w, GdkEvent *e) {
     guint keyval;
 
     gdk_event_get_keyval (e, &keyval);
@@ -404,8 +404,11 @@ void on_window1_key_press_event(GtkWidget *w, GdkEvent *e) {
         if (strcmp(g_last, "") != 0) {
             gtk_entry_set_text(GTK_ENTRY(g_entry), g_last);
         }
+    } else {
+        return FALSE;
     }
 }
+
 
 // Exit the program
 void on_btn_dlg_close_clicked() {
