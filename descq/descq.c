@@ -290,7 +290,7 @@ void on_entry_activate(GtkEntry *entry) {
         strcpy(action, EDITOR);
         strcat(action, " data/help.txt &");
         int rsp = system(action);
-        if (rsp == 0) {
+        if (rsp != 0) {
             show_message("<big>gedit</big>", "is not installed.");
         }
 
