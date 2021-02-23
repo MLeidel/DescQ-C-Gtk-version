@@ -152,8 +152,9 @@ void on_dlg_listbox_row_activated(GtkListBox *oList, GtkListBoxRow *oRow) {
         replace(listdata, " ", "%20");
         strcpy(url, "xdg-open ");
         strcat(url, "https://duckduckgo.com/?q=");
-        strcat(url, listdata);
-        printf("%s\n", url);
+        strcat(url, "\"");
+        strcat(url, listdata);  // quotes necessary incase of embeded quote
+        strcat(url, "\"");
         system(url);
     }
 }
@@ -374,8 +375,9 @@ void on_entry_activate(GtkEntry *entry) {
         replace(out_str, " ", "%20");
         strcpy(action, "xdg-open ");
         strcat(action, "https://duckduckgo.com/?q=");
-        strcat(action, out_str);
-        printf("%s\n", action);
+        strcat(action, "\"");
+        strcat(action, out_str);  // quotes needed incase of embedded quote
+        strcat(action, "\"");
         system(action);
     }
 }
