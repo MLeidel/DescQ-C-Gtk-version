@@ -10,7 +10,7 @@ To run: $ /path.../descq
 
 These files must be present
    in the descq/... directory:
-   
+
     descq.glade     the xml GUI layout for descq
     descq           program (linux binary executable)
 
@@ -22,10 +22,11 @@ These files must be present
     clip.txt       saved clipboard texts
     urls.txt       list of saved URLs
     winmet.txt     window position & size
+    editor.txt     name of your text editor
     help.txt       this file
 
-    NOTE: DESCQ will attempt to use "gedit" for its text editor.
-    To install it: sudo apt install gedit
+    NOTE: DESCQ will attempt to use "xed" for its text editor.
+    To change open 'editor.txt' and put in your editor's name.
 
 
     To activate a command hit Enter or click ■ button
@@ -33,7 +34,7 @@ These files must be present
         1. Enter text for a search
         ----> runs the search in your browser
                 and saves search text to "hist.txt" file
-        
+
         2. Enter a full URL (or URL in clipboard)
         ----> saves URL to "urls.txt" file
 
@@ -98,16 +99,16 @@ For example, to go to github website:
 to reboot:
     .reboot
     or just .r (in this case)
-    
+
 to go to greatcourses website:
     .gr
-    
+
 Commands are located by leading characters
 
 SEARCH ENGINE
 
 Descq uses the DuckDuckGo search engine.
-If you wish to use someting different then you 
+If you wish to use someting different then you
 can set it up as a service in serv.txt.
 
 CONSIDER USING DUCKDUCKGO SEARCH ENGINE
@@ -115,13 +116,13 @@ CONSIDER USING DUCKDUCKGO SEARCH ENGINE
 With DuckDuclGo hundreds of "Bang" commands will be available to you.
 Here are a few.
 --- DDG BANG ---
-    Google Maps | !m  
+    Google Maps | !m
     Amazon  | !a
     Images  | !gimg !pics
     Php     | !php
     YouTube | !ytus
     Golang  | !golang !godoc
-    Python  | !py3k !py 
+    Python  | !py3k !py
     StackOverflow | !so !sof !ov !ddso
     MDN | !mdn
     List of Bangs | !bang

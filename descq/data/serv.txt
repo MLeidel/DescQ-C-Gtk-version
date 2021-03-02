@@ -1,11 +1,11 @@
 --- COMMANDS ---
 ;calendar,https://calendar.google.com/calendar/r?pli=1
-;contacts,https://contacts.google.com
+;contacts, https://contacts.google.com
 ;dev,dev.sh
 ;drive Google,https://drive.google.com/drive/my-drive?ths=true
 ;git,https://github.com
 #htop,x-terminal-emulator -e htop
-htop,sakura -t "htop" -c 150 -r 45 -x htop &
+;htop,sakura -t "htop" -c 150 -r 45 -x htop &
 ;office,https://www.office.com/?auth=1
 ;outlook,https://outlook.com
 ;photos,https://photos.google.com/
@@ -19,5 +19,5 @@ a,Amazon,https://smile.amazon.com/s/ref=nb_sb_noss_1?field-keywords=
 m,Google Maps,https://www.google.com/maps/search/
 y,YouTube,https://www.youtube.com/results?search_query=
 i,Google Images,http://images.google.com/images?q=
-w,Wikipedia,https://en.wikipedia.org/w/index.php?title=Special:Search&profile=default&fulltext=Search&search=
+w,Wikipedia,https://en.wikipedia.org/w/index.php?title=Special:Search\&profile=default\&fulltext=Search\&search=
 p,Php,http://php.net/manual-lookup.php?pattern=
