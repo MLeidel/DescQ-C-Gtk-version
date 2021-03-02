@@ -7,15 +7,11 @@ OTHER FILES:
 This is free software; see the source for copying conditions.  There is NO
 warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE
 */
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include <time.h>
-#include "stringalt.h"
-#include "gtk/gtk.h"
-#include "gdk/gdk.h"
+#include "stralt.h"
+#include <gtk/gtk.h>
+#include <gdk/gdk.h>
 
-#define EDITOR "gedit"
+#define EDITOR g_editor
 #define BUFFER1 1024
 #define BUFFER2 2048
 #define BUFFER3 1048576
@@ -29,7 +25,8 @@ GtkWidget *g_messagebox;
 GtkClipboard *g_clipboard;
 GtkWidget *g_wnd;
 
-char g_last[BUFFER2];  // holds previous command
+char g_last[BUFFER1];  // holds previous command
+char g_editor[128] = {0};  // user's editor executable name
 
 int main(int argc, char *argv[])
 {
@@ -73,6 +70,11 @@ int main(int argc, char *argv[])
     w_width     = atoi(_fields[2]);
     w_height    = atoi(_fields[3]);
 
+    fh = open_for_read("data/editor.txt");
+    fgets(g_editor, 127, fh);
+    removen(g_editor);
+    fclose(fh);
+
     gtk_widget_show(window);
     gtk_window_move(GTK_WINDOW(g_wnd), w_left, w_top);  // set metrics ...
     gtk_window_resize(GTK_WINDOW(g_wnd), w_width, w_height);
@@ -111,7 +113,7 @@ void displayListDlg(char * target) {
         gtk_widget_destroy (GTK_WIDGET(g_row));
     }
     // Set the target file and caption heading
-    if (strcmp(target, "urls") == 0) {
+    if (equals(target, "urls")) {
         strcpy(filename, "data/urls.txt");
         gtk_window_set_title(GTK_WINDOW(g_dialog_box), "Saved URL List");
     } else {
@@ -149,7 +151,7 @@ void on_dlg_listbox_row_activated(GtkListBox *oList, GtkListBoxRow *oRow) {
         gtk_widget_hide (g_dialog_box);
     } else {
         listdata[strlen(listdata) - 14] = '\0';  // cut off the date
-        replace(listdata, " ", "%20");
+        repall(listdata, " ", "%20");
         strcpy(url, "xdg-open ");
         strcat(url, "https://duckduckgo.com/?q=");
         strcat(url, "\"");
@@ -249,70 +251,68 @@ void on_entry_activate(GtkEntry *entry) {
     sprintf(out_str, "%s", gtk_entry_get_text(entry));
     gtk_entry_set_text(entry, "");  // clear the entry widget text
     trim(out_str);  // stringalt.h
-    if (strcmp(out_str, "") == 0) {
+    if (equals(out_str, "")) {
         return;
     }
 
     strcpy(g_last, out_str);  // store command text for up/down arrow
 
-    if (strcmp(out_str, "list") == 0) {             // list urls
+    if (equalsIgnoreCase(out_str, "list")) {        // list urls
         displayListDlg("urls");
 
-    } else if (strcmp(out_str, "hist") == 0) {      // list history
+    } else if (equalsIgnoreCase(out_str, "hist")) { // list history
         displayListDlg("hist");
 
     } else if (startswith("http", out_str)) {       // saves URL to urls.txt
         write_url(out_str);
 
-    } else if (strcmp(out_str, "sc") == 0) {        // Save clipboard to clip.txt
+    } else if (equals(out_str, "sc")) {             // Save clipboard to clip.txt
         save_clipboard_to_file();
 
-    } else if (strcmp(out_str, "es") == 0) {        // edit serv.txt
+    } else if (equals(out_str, "es")) {             // edit serv.txt
         strcpy(action, EDITOR);
         strcat(action, " data/serv.txt &");
         system(action);
 
-    } else if (strcmp(out_str, "eh") == 0) {        // edit hist.txt
+    } else if (equals(out_str, "eh")) {        // edit hist.txt
         strcpy(action, EDITOR);
         strcat(action, " data/hist.txt &");
         system(action);
 
-    } else if (strcmp(out_str, "ec") == 0) {        // edit clip.txt
+    } else if (equals(out_str, "ec")) {        // edit clip.txt
         strcpy(action, EDITOR);
         strcat(action, " data/clip.txt &");
         system(action);
 
-    } else if (strcmp(out_str, "eu") == 0) {        // edit urls.txt
+    } else if (equals(out_str, "eu")) {        // edit urls.txt
         strcpy(action, EDITOR);
         strcat(action, " data/urls.txt &");
         system(action);
 
-    } else if (strcmp(out_str, "help") == 0) {        // edit help.txt
+    } else if (equalsIgnoreCase(out_str, "help")) {        // edit help.txt
         strcpy(action, EDITOR);
         strcat(action, " data/help.txt &");
         int rsp = system(action);
         if (rsp != 0) {
-            show_message("<big>gedit</big>", "is not installed.");
+            show_message("<big>text editor</big>", "is not found.");
         }
 
-    } else if (strcmp(out_str, "x") == 0) {         // exit program
+    } else if (equals(out_str, "x")) {         // exit program
         on_window1_destroy();
 
-    } else if (strcmp(out_str, "cap") == 0) {        // toggle window caption bar
+    } else if (equals(out_str, "cap")) {        // toggle window caption bar
         if (gtk_window_get_decorated(GTK_WINDOW(g_wnd))) {
             gtk_window_set_decorated (GTK_WINDOW(g_wnd), 0);
         } else {
             gtk_window_set_decorated (GTK_WINDOW(g_wnd), 1);
         }
 
-    } else if (strcmp(out_str, "winset") == 0) {        // save window position
+    } else if (equalsIgnoreCase(out_str, "winset")) {        // save window position
         gtk_window_get_position (GTK_WINDOW(g_wnd), &w_left, &w_top);
         gtk_window_get_size (GTK_WINDOW(g_wnd), &w_width, &w_height);
         fh = open_for_write("data/winmet.txt");
         fprintf(fh, "%d,%d,%d,%d\n", w_left, w_top, w_width, w_height);
         fclose(fh);
-        // printf("top = %d  left = %d\n", w_top, w_left);
-        // printf("width = %d  height = %d\n", w_width, w_height);
 
     } else if (strchr(".$;", out_str[0])) {         // run a command from serv.txt
         // open serv.txt and locate the commnad
@@ -324,21 +324,21 @@ void on_entry_activate(GtkEntry *entry) {
             ptr = strchr(line, ',');  // get pointer to the first ','
             if (ptr) {
                 strcpy(action, ptr + 1);  // one past the ','
-                *ptr = '\0';  // replace ',' with end of string \0
-                ltrim(action);  // incase of space after the ','
-                if (startswith(out_str+1, line+1)) {  // skip past the '.;$' char
+                *ptr = '\0';  // replace ',' with end of string \0 for line
+                strcpy(action, ltrim(action));  // incase of space after the ','
+                if (startswith(line+1, out_str+1)) {  // skip past the '.;$' char
                     // if action is a website
-                     if (g_str_has_prefix(action, "http")) {
+                    if (startswith(action, "http")) {
                         strcpy(line, "xdg-open ");
                         strcat(line, action);
-                        printf("%s\n", line);
                         system(line);
-                     } else {  // it has to be a local command
+                    } else {  // it has to be a local command
                         rsp = system(action);
                         if (rsp != 0) {
+                            printf("rsp=>%s\n", action);
                             show_message(out_str,"returned an error");
                         }
-                     }
+                    }
                      fclose(fh);
                      return;
                 }
@@ -356,9 +356,9 @@ void on_entry_activate(GtkEntry *entry) {
         while(1) {
             fgets(line, BUFFER2, fh);
             if (feof(fh)) break;
-            if (startswith(action, line)) {
+            if (startswith(line, action)) {
                 write_history(out_str);
-                replace(out_str, " ", "%20");
+                repall(out_str, " ", "%20");
                 removen(line);  // remove newline character
                 count = fields(line, ",");   // stringalt.h
                 strcpy(line, "xdg-open ");  // build the command ...
@@ -372,7 +372,7 @@ void on_entry_activate(GtkEntry *entry) {
     } else {
         // Internet Search using default browser
         write_history(out_str);
-        replace(out_str, " ", "%20");
+        repall(out_str, " ", "%20");
         strcpy(action, "xdg-open ");
         strcat(action, "https://duckduckgo.com/?q=");
         strcat(action, "\"");
@@ -388,7 +388,7 @@ void on_btn_entry_clicked() {
     gchar out_str[BUFFER2] = {0};
     sprintf(out_str, "%s", gtk_entry_get_text(GTK_ENTRY(g_entry)));
     trim(out_str);  // stringalt.h
-    if (strcmp(out_str, "") == 0) {  // Try to save clipboard contents to clip.txt
+    if (equals(out_str, "")) {  // Try to save clipboard contents to clip.txt
         // when entry field is empty.
         save_clipboard_to_file();
     } else {
@@ -403,7 +403,7 @@ _Bool on_window1_key_press_event(GtkWidget *w, GdkEvent *e) {
     //printf("%d\n", keyval);
 
     if (keyval == 65362 || keyval == 65364) {
-        if (strcmp(g_last, "") != 0) {
+        if (!equals(g_last, "")) {
             gtk_entry_set_text(GTK_ENTRY(g_entry), g_last);
         }
     } else {
