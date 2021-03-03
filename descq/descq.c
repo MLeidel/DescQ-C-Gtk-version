@@ -137,30 +137,6 @@ void displayListDlg(char * target) {
     gtk_widget_hide (g_dialog_box);
 }
 
-void on_dlg_listbox_row_activated(GtkListBox *oList, GtkListBoxRow *oRow) {
-    GtkWidget *bin;
-    char listdata[BUFFER2];
-    char url[BUFFER2];
-
-    bin = gtk_bin_get_child(GTK_BIN(oRow));
-    strcpy(listdata, gtk_label_get_text(GTK_LABEL(bin)));
-    if (g_str_has_prefix(listdata, "http")) {
-        strcpy(url, "xdg-open ");
-        strcat(url, listdata);
-        system(url);
-        gtk_widget_hide (g_dialog_box);
-    } else {
-        listdata[strlen(listdata) - 14] = '\0';  // cut off the date
-        repall(listdata, " ", "%20");
-        strcpy(url, "xdg-open ");
-        strcat(url, "https://duckduckgo.com/?q=");
-        strcat(url, "\"");
-        strcat(url, listdata);  // quotes necessary incase of embeded quote
-        strcat(url, "\"");
-        system(url);
-    }
-}
-
 // Save url to urls.txt file
 void write_url(char *text) {
     FILE *fh;
@@ -250,7 +226,7 @@ void on_entry_activate(GtkEntry *entry) {
 
     sprintf(out_str, "%s", gtk_entry_get_text(entry));
     gtk_entry_set_text(entry, "");  // clear the entry widget text
-    trim(out_str);  // stringalt.h
+    trim(out_str);  // stralt.h
     if (equals(out_str, "")) {
         return;
     }
@@ -379,6 +355,37 @@ void on_entry_activate(GtkEntry *entry) {
         strcat(action, out_str);  // quotes needed incase of embedded quote
         strcat(action, "\"");
         system(action);
+    }
+}
+
+void on_dlg_listbox_row_activated(GtkListBox *oList, GtkListBoxRow *oRow) {
+    GtkWidget *bin;
+    char listdata[BUFFER2];
+    char url[BUFFER2];
+
+    bin = gtk_bin_get_child(GTK_BIN(oRow));
+    strcpy(listdata, gtk_label_get_text(GTK_LABEL(bin)));
+    if (g_str_has_prefix(listdata, "http")) {
+        strcpy(url, "xdg-open ");
+        strcat(url, listdata);
+        system(url);
+        gtk_widget_hide (g_dialog_box);
+    } else {
+        listdata[strlen(listdata) - 14] = '\0';  // cut off the date
+        printf("%s\n", listdata);
+        if (listdata[1] == ':') {
+            gtk_entry_set_text(GTK_ENTRY(g_entry), listdata);
+            on_entry_activate(GTK_ENTRY(g_entry));
+        } else {
+
+            repall(listdata, " ", "%20");
+            strcpy(url, "xdg-open ");
+            strcat(url, "https://duckduckgo.com/?q=");
+            strcat(url, "\"");
+            strcat(url, listdata);  // quotes necessary incase of embeded quote
+            strcat(url, "\"");
+            system(url);
+        }
     }
 }
 
