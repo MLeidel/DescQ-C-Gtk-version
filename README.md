@@ -1,4 +1,4 @@
 # DescQ-C-Gtk
-Descq brings command line to the desktop and more
+Desktop utility for Internet Search and local system calls.
 
-See the two other Deskq projects and or look at the help.txt file for this one.
+See the two other Deskq projects and or look at the help.txt file.
