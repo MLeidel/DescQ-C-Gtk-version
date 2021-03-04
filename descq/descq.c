@@ -239,7 +239,7 @@ void on_entry_activate(GtkEntry *entry) {
     } else if (equalsIgnoreCase(out_str, "hist")) { // list history
         displayListDlg("hist");
 
-    } else if (startswith("http", out_str)) {       // saves URL to urls.txt
+    } else if (startswith(out_str, "http")) {       // saves URL to urls.txt
         write_url(out_str);
 
     } else if (equals(out_str, "sc")) {             // Save clipboard to clip.txt
