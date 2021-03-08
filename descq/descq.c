@@ -213,8 +213,8 @@ void on_btn_dlg_msg_close_clicked() {
 ***************************************/
 void on_entry_activate(GtkEntry *entry) {
     FILE *fh;
-    char action[BUFFER2];
-    char line[BUFFER2];
+    char action[BUFFER2] = {0};
+    char line[BUFFER2] = {0};
     char *ptr;
     int count = 0;
     int rsp = 0;
@@ -299,10 +299,11 @@ void on_entry_activate(GtkEntry *entry) {
             removen(line);  // remove newline character
             ptr = strchr(line, ',');  // get pointer to the first ','
             if (ptr) {
-                strcpy(action, ptr + 1);  // one past the ','
+                //strcpy(action, ptr + 1);  // one past the ','
                 *ptr = '\0';  // replace ',' with end of string \0 for line
-                strcpy(action, ltrim(action));  // incase of space after the ','
+                strcpy(action, ltrim(++ptr));  // copy trimmed string after ','
                 if (startswith(line+1, out_str+1)) {  // skip past the '.;$' char
+                    printf("action=>%s\n", action);
                     // if action is a website
                     if (startswith(action, "http")) {
                         strcpy(line, "xdg-open ");
@@ -311,7 +312,7 @@ void on_entry_activate(GtkEntry *entry) {
                     } else {  // it has to be a local command
                         rsp = system(action);
                         if (rsp != 0) {
-                            printf("rsp=>%s\n", action);
+                            //printf("rsp=>%s\n", action);
                             show_message(out_str,"returned an error");
                         }
                     }
